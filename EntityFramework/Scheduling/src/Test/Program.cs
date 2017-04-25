@@ -114,6 +114,7 @@ namespace Test {
 							MeetingDays = DaysOfWeek.Monday | DaysOfWeek.Wednesday | DaysOfWeek.Friday,
 							StartTime = new DateTime(2017, 1, 1, 13, 0, 0), // 1 pm
 							EndTime = new DateTime(2017, 1, 1, 13, 50, 0),
+							EnrolledStudents = new List<Student>()
 						};
 						fall2017.CourseSections.Add(cecs274_11);
 
@@ -123,7 +124,8 @@ namespace Test {
 							Instructor = anthony,
 							MeetingDays = DaysOfWeek.Monday | DaysOfWeek.Wednesday,
 							StartTime = new DateTime(2017, 1, 1, 9, 30, 0),
-							EndTime = new DateTime(2017, 1, 1, 10, 20, 0)
+							EndTime = new DateTime(2017, 1, 1, 10, 20, 0),
+							EnrolledStudents = new List<Student>()
 						};
 						fall2017.CourseSections.Add(cecs274_5);
 
@@ -133,7 +135,8 @@ namespace Test {
 							Instructor = neal,
 							MeetingDays = DaysOfWeek.Monday | DaysOfWeek.Wednesday,
 							StartTime = new DateTime(2017, 1, 1, 8, 0, 0),
-							EndTime = new DateTime(2017, 1, 1, 8, 50, 0)
+							EndTime = new DateTime(2017, 1, 1, 8, 50, 0),
+							EnrolledStudents = new List<Student>()
 						};
 						spring2017.CourseSections.Add(cecs174_99);
 
@@ -143,7 +146,8 @@ namespace Test {
 							Instructor = anthony,
 							MeetingDays = DaysOfWeek.Friday,
 							StartTime = new DateTime(2017, 1, 1, 10, 0, 0),
-							EndTime = new DateTime(2017, 1, 1, 11, 50, 0)
+							EndTime = new DateTime(2017, 1, 1, 11, 50, 0),
+							EnrolledStudents = new List<Student>()
 						};
 						spring2017.CourseSections.Add(cecs228_99);
 
@@ -253,14 +257,14 @@ namespace Test {
 								}
 
 								foreach (CourseSection sec in fallSem.CourseSections) {
-									if (sec.CatalogCourse.Equals(courseNumber) && sec.SectionNumber.Equals(sectionNumber)) {
+									if (sec.SectionNumber.Equals(sectionNumber)) {
 										if (s.CanRegisterForCourseSection(sec)) {
 											var section = fallSem.CourseSections.Where(x => x.Equals(sec)).FirstOrDefault();
 
 											if (section != null) {
 												section.EnrolledStudents.Add(s);
 												s.EnrolledCourses.Add(section);
-												con.SaveChanges();
+												break;
 											}
 										}
 										else {
@@ -268,8 +272,10 @@ namespace Test {
 										}
 									}
 								}
+								break;
 							}
 						}
+						con.SaveChanges();
 						break;
 				}
 				Console.WriteLine();
@@ -277,6 +283,5 @@ namespace Test {
 
 			} while (choice != 0);
 		}
-
 	}
 }
